@@ -1,0 +1,18 @@
+---
+dtd_registry_username: ""
+dtd_registry_password: ""
+dtd_registry: ""
+
+dtd_state: present
+
+dtd_app_root: ""
+dtd_app_version: ""
+dtd_app_keep_releases: 10
+
+dtd_templates_folder: ""
+
+# example nginx template
+# dtd_image: nginx:stable-alpine
+# dtd_ext_port: 80
+# dtd_templates_folder: templates
+...
