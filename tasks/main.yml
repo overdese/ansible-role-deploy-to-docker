@@ -19,9 +19,13 @@
     path: "{{ dtd_app_root }}"
     release: "{{ dtd_app_version }}"
 
-- name: debug 1
+- name: show variables
   debug:
-    msg: "{{ deploy_helper.current_path }} -- {{ dtd_app_root }} - {{ dtd_templates_folder }} - {{ dtd_app_version }}"
+    msg: |
+      - app_root: {{ dtd_app_root }}
+      - app_version: {{ dtd_app_version }}
+      - templates_folder: {{ dtd_templates_folder }}
+      - current_path: {{ deploy_helper.current_path }}
 
 
 - name: deploy and up app with docker-compose
