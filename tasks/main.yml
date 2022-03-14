@@ -1,11 +1,5 @@
 ---
 
-- name: install pip packages
-  pip:
-    name:
-      - docker
-      - docker-compose
-
 - name: login to docker registry
   community.docker.docker_login:
     username: "{{ dtd_registry_username }}"
@@ -49,15 +43,16 @@
         path: "{{ deploy_helper.current_path }}/docker-compose.yml"
       register: old_docker_compose_yml
 
-    - name: down existing services from previous version
+    - name: stop existing services from previous version
       community.docker.docker_compose:
+        project_name: "{{ dtd_project_name }}"
         project_src: "{{ deploy_helper.previous_release_path }}"
-        remove_orphans: yes
-        state: absent
+        stopped: yes
       when: old_docker_compose_yml.stat.exists
 
     - name: create and start services
       community.docker.docker_compose:
+        project_name: "{{ dtd_project_name }}"
         project_src: "{{ deploy_helper.new_release_path }}"
         build: no
       register: output
@@ -79,9 +74,9 @@
   block:
     - name: down existing services
       community.docker.docker_compose:
+        project_name: "{{ dtd_project_name }}"
         project_src: "{{ deploy_helper.previous_release_path }}"
         stopped: yes
-        remove_orphans: yes
 
   when: dtd_state == "stopped" and dtd_app_root != "" and dtd_app_version != ""
 
@@ -91,9 +86,9 @@
   block:
     - name: down existing services
       community.docker.docker_compose:
+        project_name: "{{ dtd_project_name }}"
         project_src: "{{ deploy_helper.previous_release_path }}"
         stopped: yes
-        remove_orphans: yes
         state: absent
 
     - name: remove {{ dtd_app_root }}

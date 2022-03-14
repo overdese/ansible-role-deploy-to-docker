@@ -3,6 +3,8 @@ dtd_registry_username: ""
 dtd_registry_password: ""
 dtd_registry: ""
 
+dtd_project_name: "dtd"
+
 dtd_state: present
 
 dtd_app_root: ""
