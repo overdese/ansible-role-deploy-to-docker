@@ -28,13 +28,13 @@
       file:
         dest: "{{ deploy_helper.new_release_path }}"
         state: directory
-        mode: 0770
+        mode: 0775
 
     - name: create files from templates
       template:
         src:  "{{ item }}"
         dest: "{{ deploy_helper.new_release_path }}/{{ item | basename | regex_replace('\\.j2$','') }}"
-        mode: 0770
+        mode: 0775
       with_fileglob:
         - "{{ dtd_templates_folder }}/*.j2"
 
