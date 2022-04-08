@@ -1,6 +1,6 @@
 version: "3.9"
 services:
   web:
-    image: {{ dtd_image }}
+    image: nginx:stable-alpine
     ports:
-      - {{ dtd_ext_port }}:80"
+      - "80:80"
