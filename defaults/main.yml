@@ -13,8 +13,4 @@ dtd_app_keep_releases: 10
 
 dtd_templates_folder: ""
 
-# example nginx template
-# dtd_image: nginx:stable-alpine
-# dtd_ext_port: 80
-# dtd_templates_folder: templates
 ...
