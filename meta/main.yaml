@@ -1,0 +1,11 @@
+---
+galaxy_info:
+  author: overdese
+  role_name: deploy-to-docker
+  description: Deploy docker apps to docker
+  license: GPLv3
+  galaxy_tags:
+    - deploy
+    - docker
+
+dependencies: []
