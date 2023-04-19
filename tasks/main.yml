@@ -2,23 +2,23 @@
 
 - name: login to docker registry
   community.docker.docker_login:
-    username: "{{ dtd_registry_username }}"
-    password: "{{ dtd_registry_password }}"
-    registry: "{{ dtd_registry }}"
+    username: "{{ registry_username }}"
+    password: "{{ registry_password }}"
+    registry: "{{ registry }}"
     reauthorize: yes
-  when: dtd_registry != ""
+  when: registry != ""
 
 - name: init deploy root
   community.general.deploy_helper:
-    path: "{{ dtd_app_root }}"
-    release: "{{ dtd_app_version }}"
+    path: "{{ app_root }}"
+    release: "{{ app_version }}"
 
 - name: show variables
   debug:
     msg: |
-      - app_root: {{ dtd_app_root }}
-      - app_version: {{ dtd_app_version }}
-      - templates_folder: {{ dtd_templates_folder }}
+      - app_root: {{ app_root }}
+      - app_version: {{ app_version }}
+      - templates_folder: {{ templates_folder }}
       - current_path: {{ deploy_helper.current_path }}
 
 
@@ -36,7 +36,7 @@
         dest: "{{ deploy_helper.new_release_path }}/{{ item | basename | regex_replace('\\.j2$','') }}"
         mode: 0775
       with_fileglob:
-        - "{{ dtd_templates_folder }}/*.j2"
+        - "{{ templates_folder }}/*.j2"
 
     - name: check docker-compose.yml from previous version
       stat:
@@ -45,14 +45,14 @@
 
     - name: stop existing services from previous version
       community.docker.docker_compose:
-        project_name: "{{ dtd_project_name }}"
+        project_name: "{{ project_name }}"
         project_src: "{{ deploy_helper.previous_release_path }}"
         stopped: yes
       when: old_docker_compose_yml.stat.exists
 
     - name: create and start services
       community.docker.docker_compose:
-        project_name: "{{ dtd_project_name }}"
+        project_name: "{{ project_name }}"
         project_src: "{{ deploy_helper.new_release_path }}"
         build: no
       register: output
@@ -61,12 +61,12 @@
         var: output
 
     - community.general.deploy_helper:
-        path: "{{ dtd_app_root }}"
-        release: "{{ dtd_app_version }}"
+        path: "{{ app_root }}"
+        release: "{{ app_version }}"
         state: finalize
-        keep_releases: "{{ dtd_app_keep_releases }}"
+        keep_releases: "{{ app_keep_releases }}"
 
-  when: dtd_state == "present" and dtd_app_root != "" and dtd_app_version != "" and dtd_templates_folder != ""
+  when: state == "present" and app_root != "" and app_version != "" and templates_folder != ""
 
 
 # stop services by docker-compose block
@@ -74,11 +74,11 @@
   block:
     - name: down existing services
       community.docker.docker_compose:
-        project_name: "{{ dtd_project_name }}"
+        project_name: "{{ project_name }}"
         project_src: "{{ deploy_helper.previous_release_path }}"
         stopped: yes
 
-  when: dtd_state == "stopped" and dtd_app_root != "" and dtd_app_version != ""
+  when: state == "stopped" and app_root != "" and app_version != ""
 
 
 # WARN: absent remove all data!!
@@ -86,21 +86,21 @@
   block:
     - name: down existing services
       community.docker.docker_compose:
-        project_name: "{{ dtd_project_name }}"
+        project_name: "{{ project_name }}"
         project_src: "{{ deploy_helper.previous_release_path }}"
         stopped: yes
         state: absent
 
-    - name: remove {{ dtd_app_root }}
+    - name: remove {{ app_root }}
       community.general.deploy_helper:
-        path: "{{ dtd_app_root }}"
+        path: "{{ app_root }}"
         state: absent
 
-  when: dtd_state == "absent" and dtd_app_root != "" and dtd_app_version != ""
+  when: state == "absent" and app_root != "" and app_version != ""
 
 
 - name: logout from docker registry
   community.docker.docker_login:
     state: absent
-  when: dtd_registry != ""
+  when: registry != ""
 ...

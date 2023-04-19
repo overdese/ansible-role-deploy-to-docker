@@ -14,11 +14,11 @@ playbook:
   roles:
     - role: deploy_to_docker
       vars:
-        - dtd_project_name: "nginx_app"
-        - dtd_app_root: "/var/data/nginx" # required
-        - dtd_app_version: "0.0.1" # required
-        - dtd_templates_folder: "template/nginx/docker-compose.yml.j2" # required
-        - dtd_state: "{{ nginx_state }}"
+        - project_name: "nginx_app"
+        - app_root: "/var/data/nginx" # required
+        - app_version: "0.0.1" # required
+        - templates_folder: "template/nginx/docker-compose.yml.j2" # required
+        - state: "{{ nginx_state }}"
 ...
 
 ```
