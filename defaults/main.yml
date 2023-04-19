@@ -1,16 +1,16 @@
 ---
-dtd_registry_username: ""
-dtd_registry_password: ""
-dtd_registry: ""
+registry_username: ""
+registry_password: ""
+registry: ""
 
-dtd_project_name: "dtd"
+project_name: "dtd"
 
-dtd_state: present
+state: present
 
-dtd_app_root: ""
-dtd_app_version: ""
-dtd_app_keep_releases: 10
+app_root: ""
+app_version: ""
+app_keep_releases: 10
 
-dtd_templates_folder: ""
+templates_folder: ""
 
 ...
