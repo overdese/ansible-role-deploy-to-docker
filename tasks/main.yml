@@ -54,7 +54,8 @@
       community.docker.docker_compose:
         project_name: "{{ project_name }}"
         project_src: "{{ deploy_helper.new_release_path }}"
-        build: no
+        build: false
+        pull: true
       register: output
 
     - ansible.builtin.debug:
